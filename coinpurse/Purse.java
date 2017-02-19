@@ -3,6 +3,7 @@ package coinpurse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
 *  A coin purse contains coins.
@@ -15,7 +16,8 @@ import java.util.Comparator;
 */
 public class Purse {
 	/** Collection of objects in the purse. */
-    ArrayList<Coin> money = new ArrayList<Coin>();
+	List<Valuable> money;
+	Valuable[] array = new Valuable[20];
 	
     /** Capacity is maximum number of coins the purse can hold.
      *  Capacity is set when the purse is created and cannot be changed.
@@ -28,6 +30,7 @@ public class Purse {
      */
     public Purse( int capacity ) {
     	this.capacity = capacity;
+    	money = new ArrayList<>();
     }
 
     /**
@@ -45,7 +48,7 @@ public class Purse {
      */
     public double getBalance() {
     	double balance = 0;
-    	for(Coin value : money){
+    	for(Valuable value : this.money){
     		balance += value.getValue();
     	}
     	return balance;
@@ -81,14 +84,13 @@ public class Purse {
      * @param coin is a Coin object to insert into purse
      * @return true if coin inserted, false if can't insert
      */
-    public boolean insert( Coin coin ) {
+    public boolean insert( Valuable valuable ) {
         // if the purse is already full then can't insert anything.
-    	if(coin.getValue()<=0 || this.count()==this.getCapacity()){
+    	if(valuable.getValue()<=0 || this.count()==this.getCapacity()){
     		return false;
     	}
     	else {
-    		money.add(coin);
-    		Collections.sort(money);
+    		this.money.add(valuable);
     		return true;
     	}
     }
@@ -101,8 +103,8 @@ public class Purse {
      *  @return array of Coin objects for money withdrawn, 
 	 *    or null if cannot withdraw requested amount.
      */
-    public Coin[] withdraw( double amount ) {
-    	ArrayList<Coin> templ = new ArrayList<Coin>();
+    public Valuable[] withdraw( double amount ) {
+    	ArrayList<Valuable> templ = new ArrayList<Valuable>();
         if (amount < 0){
         	return null;
         }
@@ -125,6 +127,8 @@ public class Purse {
 				money.addAll(templ);
 				return null;
 			}
+			
+			
 			// failed. Don't change the contents of the purse.
 		}
 		
@@ -133,7 +137,7 @@ public class Purse {
 		// and return them as an array.
 		// Use list.toArray( array[] ) to copy a list into an array.
 		// toArray returns a reference to the array itself.
-		Coin[] array = new Coin[templ.size()];
+		Valuable[] array = new Valuable[templ.size()];
 		templ.toArray(array);
         return array;
 	}
