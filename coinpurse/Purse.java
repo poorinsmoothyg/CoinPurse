@@ -86,7 +86,7 @@ public class Purse {
      */
     public boolean insert( Valuable valuable ) {
         // if the purse is already full then can't insert anything.
-    	if(valuable.getValue()<=0 || this.count()==this.getCapacity()){
+    	if(valuable.getValue() <= 0 || this.count()==this.getCapacity()){
     		return false;
     	}
     	else {

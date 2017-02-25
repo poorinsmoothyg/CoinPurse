@@ -2,6 +2,8 @@ package coinpurse;
 
 import java.util.Scanner;
 
+import org.omg.PortableServer.ServantManagerOperations;
+
 /** 
  * User Interface for the Coin Purse. 
  * This class provides simple interactive dialog for inserting
@@ -15,6 +17,7 @@ public class ConsoleDialog {
 	private static Scanner console = new Scanner( System.in );
 
 	private Purse purse;
+	private MoneyFactory money = MoneyFactory.getInstance();
 
 	/** 
 	 * Initialize a new Purse dialog.
@@ -54,22 +57,17 @@ public class ConsoleDialog {
 		Scanner scanline = new Scanner(inline);
 		while( scanline.hasNextDouble() ) {
 			double value = scanline.nextDouble();
-			if(value < 20){
-				Coin coin = new Coin(value);
-				System.out.printf("Deposit %s... ", coin.toString() );
-				boolean ok = purse.insert(coin);
+			try {
+				Valuable v ;
+				v = money.createMoney(value);
+				System.out.printf("Deposit %s... ", v.toString() );
+				boolean ok = purse.insert(v);
 				System.out.println( (ok? "ok" : "FAILED") );
-			}
-			else{
-				BankNote bankNote = new BankNote(value);
-				System.out.printf("Deposit %s... ", bankNote.toString() );
-				boolean ok = purse.insert(bankNote);
-				System.out.println( (ok? "ok" : "FAILED") );
-			}
+			}catch (IllegalArgumentException ex){
+				System.out.println("Sorry, "+value+" is not a valid amount.");
+				continue;}
 		}
-		if ( scanline.hasNext() )
-			System.out.println("Invalid input: "+scanline.next() );
-	}
+}
 
 	/** Ask how much money (Baht) to withdraw and then do it.
 	 *  After withdraw, show the values of the coins we withdrew.

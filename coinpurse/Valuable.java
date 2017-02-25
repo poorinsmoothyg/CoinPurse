@@ -5,7 +5,7 @@ package coinpurse;
  * @author Poorin Pichayamongkol
  *
  */
-public interface Valuable {
+public interface Valuable extends Comparable{
 	/**
 	 * Get the monetary value of this object, in its own currency.
 	 * @return the value of this object.

@@ -1,6 +1,7 @@
 package coinpurse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -114,7 +115,11 @@ public class CoinUtil implements Valuable{
 	/** Make a list of coins using given values. */ 
 	public static List<Valuable> makeCoins(String currency, double ... values) {
 		List<Valuable> list = new ArrayList<Valuable>();
-		for(double value : values) list.add(new Coin(value,currency));
+		for(double value : values) {
+			Valuable c= new Coin(value,currency);
+			list.add(c);
+		}
+		System.out.println(list);
 		return list;
 	}
 
